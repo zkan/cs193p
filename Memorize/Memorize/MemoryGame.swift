@@ -21,21 +21,27 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
 
     mutating func choose(_ card: Card) {
-        print("Choose \(card)")
-        if let chosenIndex = index(of: card) {
-            cards[chosenIndex].isFaceUp.toggle()
-        }
-    }
-
-    // TODO: Refactor
-    private func index(of card: Card) -> Int? {
-        for index in cards.indices {
-            if cards[index].id == card.id {
-                return index
+        if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
+                cards[chosenIndex].isFaceUp.toggle()
             }
         }
-        return nil
-    }
+
+//    mutating func choose(_ card: Card) {
+//        print("Choose \(card)")
+//        if let chosenIndex = index(of: card) {
+//            cards[chosenIndex].isFaceUp.toggle()
+//        }
+//    }
+
+    // TODO: Refactor
+//    private func index(of card: Card) -> Int? {
+//        for index in cards.indices {
+//            if cards[index].id == card.id {
+//                return index
+//            }
+//        }
+//        return nil
+//    }
 
     mutating func shuffle() {
         cards.shuffle()
