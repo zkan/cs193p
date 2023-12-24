@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EmojiMemoryGameView: View {
-    var viewModel: EmojiMemoryGame = EmojiMemoryGame()
+    @ObservedObject var viewModel: EmojiMemoryGame
     
 //    let emojis: Array<String> = ["👻", "🎃", "🕷️", "😈"]
 //    let emojis: [String] = ["👻", "🎃", "🕷️", "😈"]
@@ -29,6 +29,9 @@ struct EmojiMemoryGameView: View {
                 themeSelector(emojisTheme: emojisVehicles, name: "Vehicles", symbol: "car")
                 themeSelector(emojisTheme: emojisPeople, name: "People", symbol: "person.crop.circle")
             }
+            Button("Shuffle") {
+                viewModel.shuffle()
+            }
         }
         .padding()
     }
@@ -45,10 +48,11 @@ struct EmojiMemoryGameView: View {
     }
 
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 60))]) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)]) {
             ForEach(viewModel.cards.indices, id: \.self) { index in
-                CardView(card: viewModel.cards[index])
+                CardView(viewModel.cards[index])
                     .aspectRatio(2/3, contentMode: .fit)
+                    .padding(4)
             }
         }
         .foregroundColor(.red)
@@ -58,6 +62,10 @@ struct EmojiMemoryGameView: View {
 struct CardView: View {
     let card: MemoryGame<String>.Card
 
+    init(_ card: MemoryGame<String>.Card) {
+        self.card = card
+    }
+
     var body: some View {
         ZStack {
             // let means a constant
@@ -65,7 +73,10 @@ struct CardView: View {
             Group {
                 base.fill(.white)
                 base.strokeBorder(lineWidth: 2)
-                Text(card.content).font(.largeTitle)
+                Text(card.content)
+                    .font(.system(size: 200))
+                    .minimumScaleFactor(0.01)
+                    .aspectRatio(1, contentMode: .fit)
             }
             .opacity(card.isFaceUp ? 1 : 0)
             base.fill().opacity(card.isFaceUp ? 0 : 1)
@@ -80,7 +91,7 @@ struct CardView: View {
 }
 
 #Preview {
-    EmojiMemoryGameView()
+    EmojiMemoryGameView(viewModel: EmojiMemoryGame())
 }
 
 //def multiply(first, by second=0):
