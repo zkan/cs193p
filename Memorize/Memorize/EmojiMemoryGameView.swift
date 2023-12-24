@@ -23,6 +23,7 @@ struct EmojiMemoryGameView: View {
             Text("Memorize!").font(.largeTitle)
             ScrollView {
                 cards
+                    .animation(.default, value: viewModel.cards)
             }
             HStack(spacing: 18) {
                 themeSelector(emojisTheme: emojisHalloween, name: "Halloween", symbol: "person.crop.circle.badge.moon")
@@ -49,8 +50,8 @@ struct EmojiMemoryGameView: View {
 
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)]) {
-            ForEach(viewModel.cards.indices, id: \.self) { index in
-                CardView(viewModel.cards[index])
+            ForEach(viewModel.cards) { card in
+                CardView(card)
                     .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
             }
