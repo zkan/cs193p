@@ -9,13 +9,7 @@ import SwiftUI
 
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
-    
-//    let emojis: Array<String> = ["👻", "🎃", "🕷️", "😈"]
-//    let emojis: [String] = ["👻", "🎃", "🕷️", "😈"]
-    let emojisHalloween = ["👻", "🎃", "🕷️", "😈", "💀", "🕸️", "🧙‍♀️", "🙀"]
-    let emojisVehicles = ["🚙", "🚘", "🚗", "🚖", "🚔", "🛩️", "🛫", "✈️"]
-    let emojisPeople = ["😀", "😃", "😄", "😁", "😆", "🥹", "😅", "😂"]
-    
+
     @State var emojis: Array<String> = []
 
     var body: some View {
@@ -26,9 +20,9 @@ struct EmojiMemoryGameView: View {
                     .animation(.default, value: viewModel.cards)
             }
             HStack(spacing: 18) {
-                themeSelector(emojisTheme: emojisHalloween, name: "Halloween", symbol: "person.crop.circle.badge.moon")
-                themeSelector(emojisTheme: emojisVehicles, name: "Vehicles", symbol: "car")
-                themeSelector(emojisTheme: emojisPeople, name: "People", symbol: "person.crop.circle")
+                themeSelector(name: "Halloween", symbol: "person.crop.circle.badge.moon")
+                themeSelector(name: "Vehicles", symbol: "car")
+                themeSelector(name: "People", symbol: "person.crop.circle")
             }
             Button("Shuffle") {
                 viewModel.shuffle()
@@ -37,9 +31,9 @@ struct EmojiMemoryGameView: View {
         .padding()
     }
     
-    func themeSelector(emojisTheme: Array<String>, name: String, symbol: String) -> some View {
+    func themeSelector(name: String, symbol: String) -> some View {
         Button(action: {
-            emojis = (emojisTheme + emojisTheme).shuffled()
+            viewModel.setTheme(to: name)
         }) {
             VStack {
                 Image(systemName: symbol).font(.largeTitle)
