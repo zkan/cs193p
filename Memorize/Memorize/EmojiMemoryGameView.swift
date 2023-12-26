@@ -15,6 +15,9 @@ struct EmojiMemoryGameView: View {
     var body: some View {
         VStack {
             Text("Memorize!").font(.largeTitle)
+            Button("New Game") {
+                viewModel.createNewGame()
+            }
             ScrollView {
                 cards
                     .animation(.default, value: viewModel.cards)
@@ -33,7 +36,7 @@ struct EmojiMemoryGameView: View {
     
     func themeSelector(name: String, symbol: String) -> some View {
         Button(action: {
-            viewModel.setTheme(to: name)
+//            viewModel.setTheme(to: name)
         }) {
             VStack {
                 Image(systemName: symbol).font(.largeTitle)
@@ -56,7 +59,7 @@ struct EmojiMemoryGameView: View {
                 }
             }
         }
-        .foregroundColor(.red)
+        .foregroundColor(viewModel.chosenTheme.color)
     }
 }
 

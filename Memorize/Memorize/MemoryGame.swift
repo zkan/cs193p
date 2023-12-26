@@ -6,17 +6,28 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
     // Access control
     private(set) var cards: Array<Card>
+    private(set) var themes: Array<Theme>
+    private(set) var chosenTheme: Theme
 
-    init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
+    init(numberOfPairsOfCards: Int) {
+        themes = [
+            Theme(name: "Halloween", emojis: ["👻", "🎃", "🕷️", "😈", "💀", "🕸️", "🧙‍♀️", "🙀"], numberOfPairs: 6, color: .orange),
+            Theme(name: "Vehicles", emojis: ["🚙", "🚘", "🚗", "🚖", "🚔", "🛩️", "🛫", "✈️"], numberOfPairs: 6, color: .blue),
+            Theme(name: "People", emojis: ["😀", "😃", "😄", "😁", "😆", "🥹", "😅", "😂"], numberOfPairs: 6, color: .yellow)
+        ]
+
+        chosenTheme = themes.randomElement()!
+
         cards = []
-        for pairIndex in 0..<max(2, numberOfPairsOfCards) {
-            let content = cardContentFactory(pairIndex)
-            cards.append(Card(content: content, id: "\(pairIndex + 1)a"))
-            cards.append(Card(content: content, id: "\(pairIndex + 1)b"))
+        for pairIndex in 0..<max(2, chosenTheme.numberOfPairs) {
+            let content = chosenTheme.emojis[pairIndex]
+            cards.append(Card(content: content as! CardContent, id: "\(pairIndex + 1)a"))
+            cards.append(Card(content: content as! CardContent, id: "\(pairIndex + 1)b"))
         }
         cards.shuffle()
     }
@@ -70,5 +81,12 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         let content: CardContent
 
         var id: String
+    }
+
+    struct Theme {
+        var name: String
+        var emojis: Array<String>
+        var numberOfPairs: Int
+        var color: Color
     }
 }
