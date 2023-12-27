@@ -14,11 +14,13 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var themes: Array<Theme>
     private(set) var chosenTheme: Theme
 
-    init(numberOfPairsOfCards: Int) {
+    var indexOfTheOneAndOnlyFaceUpCard: Int?
+
+    init() {
         themes = [
             Theme(name: "Halloween", emojis: ["👻", "🎃", "🕷️", "😈", "💀", "🕸️", "🧙‍♀️", "🙀"], numberOfPairs: 6, color: .orange),
-            Theme(name: "Vehicles", emojis: ["🚙", "🚘", "🚗", "🚖", "🚔", "🛩️", "🛫", "✈️"], numberOfPairs: 6, color: .blue),
-            Theme(name: "People", emojis: ["😀", "😃", "😄", "😁", "😆", "🥹", "😅", "😂"], numberOfPairs: 6, color: .yellow)
+            Theme(name: "Vehicles", emojis: ["🚙", "🚘", "🚗", "🚖", "🚔", "🛩️", "🛫", "✈️"], numberOfPairs: 8, color: .blue),
+            Theme(name: "People", emojis: ["😀", "😃", "😄", "😁", "😆", "🥹", "😅", "😂"], numberOfPairs: 4, color: .yellow)
         ]
 
         chosenTheme = themes.randomElement()!
@@ -31,8 +33,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
         cards.shuffle()
     }
-
-    var indexOfTheOneAndOnlyFaceUpCard: Int?
 
     mutating func choose(_ card: Card) {
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
@@ -53,23 +53,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             }
         }
     }
-
-//    mutating func choose(_ card: Card) {
-//        print("Choose \(card)")
-//        if let chosenIndex = index(of: card) {
-//            cards[chosenIndex].isFaceUp.toggle()
-//        }
-//    }
-
-    // TODO: Refactor
-//    private func index(of card: Card) -> Int? {
-//        for index in cards.indices {
-//            if cards[index].id == card.id {
-//                return index
-//            }
-//        }
-//        return nil
-//    }
 
     mutating func shuffle() {
         cards.shuffle()

@@ -22,27 +22,8 @@ struct EmojiMemoryGameView: View {
                 cards
                     .animation(.default, value: viewModel.cards)
             }
-            HStack(spacing: 18) {
-                themeSelector(name: "Halloween", symbol: "person.crop.circle.badge.moon")
-                themeSelector(name: "Vehicles", symbol: "car")
-                themeSelector(name: "People", symbol: "person.crop.circle")
-            }
-            Button("Shuffle") {
-                viewModel.shuffle()
-            }
         }
         .padding()
-    }
-    
-    func themeSelector(name: String, symbol: String) -> some View {
-        Button(action: {
-//            viewModel.setTheme(to: name)
-        }) {
-            VStack {
-                Image(systemName: symbol).font(.largeTitle)
-                Text(name)
-            }
-        }
     }
 
     var cards: some View {
@@ -86,20 +67,9 @@ struct CardView: View {
             base.fill().opacity(card.isFaceUp ? 0 : 1)
         }
         .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
-//        .onTapGesture {
-//            print("tapped")
-//
-////            isFaceUp = !isFaceUp
-//            card.isFaceUp.toggle()
-//        }
     }
 }
 
 #Preview {
     EmojiMemoryGameView(viewModel: EmojiMemoryGame())
 }
-
-//def multiply(first, by second=0):
-//    return first * second
-//
-//multiply(5, by=3)
